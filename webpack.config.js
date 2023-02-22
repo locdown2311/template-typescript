@@ -16,8 +16,15 @@ module.exports = {
                 exclude: /node_modules/,
             },
             {
-                test: /\.css$/,
-                use: [MiniCssExtractPlugin.loader, "css-loader"]
+                test: /\.s[ac]ss$/i,
+                use: [
+                    // fallback to style-loader in development
+                    process.env.NODE_ENV !== "production"
+                        ? "style-loader"
+                        : MiniCssExtractPlugin.loader,
+                    "css-loader",
+                    "sass-loader",
+                ],
             }
         ],
     },
@@ -32,7 +39,10 @@ module.exports = {
     },
     plugins: [
         new MiniCssExtractPlugin({
-            filename: "bundle.css"
+            // Options similar to the same options in webpackOptions.output
+            // both options are optional
+            filename: "[name].css",
+            chunkFilename: "[id].css",
         }),
         new CopyPlugin({
             patterns: [

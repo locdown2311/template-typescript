@@ -1,3 +1,4 @@
+import './sass/main.scss';
 interface IHomer {
     name(): String;
 }
